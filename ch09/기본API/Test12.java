@@ -14,7 +14,7 @@ public class Test12 {
 		{
 			arrInt[i] = Integer.parseInt(arr[i]);
 		}
-		Arrays.sort(arrInt);
+		Arrays.sort(arrInt); //참조변수 arrInt[] 변경이 되면 메인에서도 변경 된  값에 접근하여 사용.
 	}
 	static void showNumber(int[]arr) {
 		System.out.println();

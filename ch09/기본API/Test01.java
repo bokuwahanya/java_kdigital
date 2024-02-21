@@ -3,7 +3,7 @@ package com.ruby.java.ch09.기본API;
 
 class MyObject {
 	public MyObject() {}
-	//@overrride 주석 함수 재정의 
+	//@override 주석 함수 재정의 
 	public String toString() {
 		return "MyObject";
 	}
@@ -22,6 +22,7 @@ public class Test01 {
 
 		Class c = obj1.getClass();
 		System.out.println(c.getName());
+		obj1.toString();
 	
 
 		System.out.println(obj1);//toString() 결과와 같은 이유는 자동적인 타입 캐스팅 때문임 > 정수를 hexa로 변경한 것
@@ -30,7 +31,7 @@ public class Test01 {
 		System.out.println(obj3);
 
 		MyObject obj4 = new MyObject();
-		System.out.println(obj4);
+		System.out.println("Myboject 출력 :" + obj4);
 		MyObject obj5 = new MyObject();
 		//obj4.equals(obj5) //MyObject의 equals()가 실행됨
 		if (obj4.equals(obj5)) {//hashcode가 다르면 다른 객체로 본다 -기준은 hashcode를 갖고 판단한다

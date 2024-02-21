@@ -29,8 +29,8 @@ public static void main(String[] args) {
 			for(int sum =0; sum <B.length; sum++)
 				for(int k = 0; k < B.length; k++) { 
 					
-					sum += A[i][k]*B[k][j];
-					C[i][j] = sum; 
+					C[i][j] += A[i][k]*B[k][j];
+					
 					}
 	
 	int F[][] = new int [4][3];

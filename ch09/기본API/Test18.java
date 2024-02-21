@@ -36,7 +36,7 @@ public class Test18 {
         String regex = "^(?=.*[A-Z])(?=.*[!@#$%^&*()])(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$";
 
         Pattern pattern = Pattern.compile(regex);
-        Matcher matcher = pattern.matcher(password2);
+        Matcher matcher = pattern.matcher(password);
 
         if(matcher.matches()) {
             System.out.println("암호가 유효합니다.");
