@@ -1,4 +1,4 @@
-package com.ruby.java.ch10.collection;
+package com.ruby.java.ch10;
 //실습 대상
 import java.util.ArrayList;
 import java.util.Arrays;

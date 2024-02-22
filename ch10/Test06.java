@@ -1,5 +1,5 @@
 //HashMap - key 값으로 hash하여 저장 - 실습 대상 
-package com.ruby.java.ch10.collection;
+package com.ruby.java.ch10;
 
 import java.util.HashMap;
 

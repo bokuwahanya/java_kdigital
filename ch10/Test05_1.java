@@ -1,10 +1,10 @@
-package com.ruby.java.ch10.collection;
+package com.ruby.java.ch10;
 //10.2.3  Linked List - 실습대상 
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 
-public class Test05 {
+public class Test05_1 {
 
 	public static void main(String[] args) {
 		LinkedList<String> list = new LinkedList<>();
@@ -18,11 +18,11 @@ public class Test05 {
 		}
 
 		System.out.println();
-		
+		//list.
 		list.add(1, "LA");
 		print(1, list);
 		list.addFirst("런던");
-		Test05.print(2, list);
+		print(2, list);
 		list.addLast("서울");
 		print(3, list);
 
@@ -36,7 +36,6 @@ public class Test05 {
 		System.out.println("7 : " + list.peek());
 		System.out.println("8 : " + list.peekFirst());
 		System.out.println("9 : " + list.peekLast());
-
 		list.poll();
 		print(10, list);
 		list.pollFirst();
@@ -67,7 +66,7 @@ public class Test05 {
 		List<String> list2 = Arrays.asList("북경", "상해");
 		list.addAll(list2);
 		//list.sort();/Linked List의 sort는 지원되지 않음
-		Object obj[] = list.toArray();
+		Object obj[] = list.toArray(); //리스트에 있는 원소들을 배열로 만들어준다.
 		System.out.println("24 : " + Arrays.toString(obj));
 
 		String cities[] = new String[0];
@@ -79,7 +78,7 @@ public class Test05 {
 		
 		LinkedList<String> list3 = new LinkedList<String>(list2);
 		print(27, list3);
-		
+		 
 	}
 
 	static void print(int n, List<String> list) {

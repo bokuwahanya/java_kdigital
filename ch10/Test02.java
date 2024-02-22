@@ -1,4 +1,4 @@
-package com.ruby.java.ch10.collection;
+package com.ruby.java.ch10;
 //실습 대상
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -61,6 +61,7 @@ public class Test02 {
 		num[0] = 10;num[1] = 20; num[2] = 30; //num[1] = 15;// 삽입하려면  
 		
 		Object arr2[] = new Object[10];
+		ArrayList lst =new ArrayList();//크기가 10인 리스트를 생성
 		arr2[0]=e1;
 		arr2[1]=e2;
 		arr2[2]=e3;
@@ -72,14 +73,15 @@ public class Test02 {
 		//int len = arr2[0].length();//에러이다 arr2[0].에 나타나는 메소드는 Object 메소드만 있다: 교재 466페이지 마지막 문단 
 		int len2 = ((String)arr2[3]).length();
 		
-		ArrayList lst = new ArrayList(); //크기가 10인 리스트를 생성
+		
+		ArrayList lst = new ArrayList(); 
 		lst.add(s);
 		lst.add(ix);
 		//int len3 = list.get(0).length();//오류 > list.get(0).은 Object이기 때문이다.
 		int len4 = ((String)lst.get(0)).length();
 		
 		//페이지 468 -  generic 타입을 학습
-		List<String> list = new ArrayList<String>();//크기가 10인 리스트 생성
+		ArrayList<String> list = new ArrayList<>();//크기가 10인 리스트 생성 
 		list.add("서울");
 		list.add("북경");
 		list.add("상해");

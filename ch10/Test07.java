@@ -1,5 +1,5 @@
 //숙달 훈련 필요   - 실습 대상 - 파이썬 dictionary
-package com.ruby.java.ch10.collection;
+package com.ruby.java.ch10;
 //MAP에 iterator 사용 실습 - iterator 사용 실습 
 import java.util.HashMap;
 import java.util.Iterator;
@@ -19,7 +19,7 @@ public class Test07 {
 
 // 방법1 -iterator 사용
 		System.out.println("\n방법1:");
-		Iterator<String> keys = dic.keySet().iterator();
+		Iterator<String> keys = dic.keySet().iterator(); // 기억 필요.. 
 		while (keys.hasNext()) {
 			String key = keys.next();
 			System.out.println(String.format("%s : %s", key, dic.get(key)));
