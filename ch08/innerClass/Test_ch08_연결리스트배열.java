@@ -1,6 +1,6 @@
 package com.ruby.java.ch08.innerClass;
 
-import com.ruby.java.ch08.innerClass.MyLinkedList.Node;
+
 
 class Node3 {
 	int data;
@@ -29,7 +29,7 @@ class LinkedList3 {
 
 	void showList() {
 		Node3 p = first;
-		
+
 		if(p == null) {
 			first = p;
 			return;
@@ -38,9 +38,28 @@ class LinkedList3 {
 			System.out.print(p.data+"\t");
 			p = p.link;
 		}
-		
+		System.out.println();
+
 	}
 	void insert(int data) {
+		Node3 p = first, q = null;
+		Node3 newNode = new Node3(data);
+
+		if(p.data >= newNode.data) { 
+			newNode.link = p;
+			first = newNode;
+		} else {
+			q = p; // 시작점 정의
+			while(q.link != null && q.link.data < newNode.data) {
+				q = q.link;
+			}
+			newNode.link = q.link;
+			q.link = newNode;
+			
+		}
+	}
+}
+
 //		Node3 p = first, q = null;
 //		Node3 newNode = new Node3(data);
 //		
@@ -55,25 +74,10 @@ class LinkedList3 {
 //		newNode.link = q.link;
 //		q.link = newNode;
 //		}
-		
-		Node3 p = first, q = null;
-		Node3 newNode = new Node3(data);
-		
-		if(p.data >= newNode.data) { 
-			newNode.link = p;
-			first = newNode;
-		} else {
-		q = p; // 시작점 정의
-		while(q.link != null && q.link.data < newNode.data) {
-				q = q.link;
-		}
-		newNode.link = q.link;
-		q.link = newNode;
-		}
-	}
-	
-	
-}
+//	}
+//	
+
+
 
 public class Test_ch08_연결리스트배열 {
 	static int getList(int[]data) {
@@ -87,9 +91,9 @@ public class Test_ch08_연결리스트배열 {
 		return count;
 	}
 	static void showList(int[]data) {
-		System.out.println();
-		for (int i=0; i < data.length; i++)
-			System.out.print(" " + i + " ");
+		//			System.out.println();
+		//			for (int i=0; i < data.length; i++)
+		//				System.out.print(" " + i + " ");
 		System.out.println();
 		for (int i = 0; i < data.length; i++) {
 			if (data[i] < 10)
@@ -97,22 +101,34 @@ public class Test_ch08_연결리스트배열 {
 			System.out.print(data[i]+ " ");
 		}
 	}
-	//		static int insertList(int[] data, int count, int x) {
-	//			int indx = 0;
-	//
-	//		}
+	static int insertList(int[] data, int count, int x) {
+		int index =0;
+		//x가 들어갈 인덱스 찾기
+		for(int i = 0; i < count; i++)
+			if(data[i]> x) {
+				index = i;
+				break;
+			}
+		for (int i = count-1; i >= index; i--) {
+			data[i+1] = data[i];
+		}
+		data[index]=x;
+			
+		return ++count;
+	}
 
 	public static void main(String[] args) {
-		//			int[]list = new int[10];
-		//			int count = 0;
-		//			System.out.println("배열로 리스트::");
-		//			count = getList(list);
-		//			showList(list);
-		//			count = insertList(list, count, 3);
-		//			showList(list);
-		//			count = insertList(list, count, 7);
-		//			showList(list);
-		//			//파트 1 배열가지고 하는 거
+		int[]list = new int[10];
+		int count = 0;
+		System.out.println("배열로 리스트::");
+		count = getList(list);
+		showList(list);
+		count = insertList(list, count, 3);
+		showList(list);
+		count = insertList(list, count, 7);
+		showList(list);
+		System.out.println();
+		//파트 1 배열가지고 하는 거
 
 		LinkedList3 ll = new LinkedList3();
 		ll.append(5);ll.append(10);ll.append(15);ll.append(20);ll.append(25);
@@ -122,6 +138,7 @@ public class Test_ch08_연결리스트배열 {
 		//파트 2 node를 이용해서 링크드 리스트로 하는거
 	}
 }
+
 
 
 
