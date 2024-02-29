@@ -19,14 +19,16 @@ public class Test08 {
 	public static void main(String[] args) 
 //			throws EmptyStringException
 	{
+		String str = "Korea,australia,chian,gramny,spain,turky";
+		
+		StringFunc2 sf = (s) -> {
+			if(s.length() == 0)
+				throw new EmptyStringException();
+			return s.split(",");
+		};
+		
+		String result[];
 		try {
-			String str = "Korea,australia,chian,gramny,spain,turky";
-			
-			StringFunc2 sf = (s) -> {
-				if(s.length() == 0)
-					throw new EmptyStringException();
-				return s.split(",");
-			};
 			String result[] =sf.modify(str);
 			System.out.println(Arrays.toString(result));
 			
@@ -34,7 +36,7 @@ public class Test08 {
 			String result2[] = sf.modify(str2);
 			System.out.println(Arrays.toString(result2));
 			
-		} catch (Exception e) {
+		} catch (EmptyStringException e) {
 			System.out.println("삐빅 예외처리");
 			// TODO: handle exception
 		}

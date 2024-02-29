@@ -9,7 +9,7 @@ public class Gugudan_test {
 //			ggd.print(i);
 //			ggd.horizen(i);
 		
-			ggd.part(7);
+			ggd.part(4);
 //			System.out.println("-".repeat(45));
 //		}
 		
