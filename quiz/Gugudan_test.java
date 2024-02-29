@@ -5,10 +5,20 @@ public class Gugudan_test {
 	public static void main(String[] args) {
 		Gugudan ggd = new Gugudan();
 		
-		for(int i = 1; i < 10; i++) {
-			ggd.print(i);
-			System.out.println("-".repeat(45));
-		}
+//		for(int i = 1; i < 10; i++) {
+//			ggd.print(i);
+//			ggd.horizen(i);
+		
+			ggd.part(7);
+//			System.out.println("-".repeat(45));
+//		}
+		
+		
+		
+			
+		
+			
+		
 		System.out.println("end");
 		
 //		ggd.print(2);

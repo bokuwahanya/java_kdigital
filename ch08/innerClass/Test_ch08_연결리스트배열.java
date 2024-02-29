@@ -42,40 +42,40 @@ class LinkedList3 {
 
 	}
 	void insert(int data) {
-		Node3 p = first, q = null;
-		Node3 newNode = new Node3(data);
-
-		if(p.data >= newNode.data) { 
-			newNode.link = p;
-			first = newNode;
-		} else {
-			q = p; // 시작점 정의
-			while(q.link != null && q.link.data < newNode.data) {
-				q = q.link;
-			}
-			newNode.link = q.link;
-			q.link = newNode;
-			
-		}
-	}
-}
-
 //		Node3 p = first, q = null;
 //		Node3 newNode = new Node3(data);
-//		
+//
 //		if(p.data >= newNode.data) { 
 //			newNode.link = p;
 //			first = newNode;
 //		} else {
-//		q = p; // 시작점 정의
-//		while(q.link != null && q.link.data < newNode.data) {
+//			q = p; // 시작점 정의
+//			while(q.link != null && q.link.data < newNode.data) {
 //				q = q.link;
-//		}
-//		newNode.link = q.link;
-//		q.link = newNode;
+//			}
+//			newNode.link = q.link;
+//			q.link = newNode;
+//			
 //		}
 //	}
-//	
+//}
+
+		Node3 p = first, q = null;
+		Node3 newNode = new Node3(data);
+		
+		if(p.data >= newNode.data) { 
+			newNode.link = p;
+			first = newNode;
+		} else {
+		q = p; // 시작점 정의
+		while(p.link != null && p.data < newNode.data) {
+				p = p.link;
+		}
+		newNode.link = p;
+		q.link = newNode;
+		}
+	}
+	}
 
 
 
