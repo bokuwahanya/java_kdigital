@@ -30,7 +30,7 @@ class PhyscData implements Comparable<PhyscData>{
 	}
 //	public int equals(PhyscData p) {
 //		return height;
-//
+
 //	}
 }
 public class 실습2_14객체배열정렬 {

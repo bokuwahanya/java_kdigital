@@ -33,6 +33,7 @@ public class train_스트링리스트정렬 {
 	    }
 	    
 	    static String[] removeDuplicateList(List<String> list) {
+	 
 	    	
 	    	//리스트를 배열로 변환 > 배열에서 중복을 찾는다
 		    String cities[] = new String[0];
