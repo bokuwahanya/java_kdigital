@@ -9,8 +9,18 @@ class PhyscData3 {
 	int height;
 	double vision;
 
+	public PhyscData3(String string, int i, double d) {
+		// TODO Auto-generated constructor stub
+	}
 }
+
 class HeightOrderComparator2 implements Comparator<PhyscData3>{
+
+	@Override
+	public int compare(PhyscData3 o1, PhyscData3 o2) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
 }
 public class train실습3_8객체비교연산자 {	
@@ -34,6 +44,11 @@ public class train실습3_8객체비교연산자 {
 		
 		int idx = Arrays.binarySearch(data, key, HEIGHT_ORDER);
 		System.out.println("\nArrays.binarySearch(): result = " + idx);
+	}
+
+	private static void showData(String string, PhyscData3[] data) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

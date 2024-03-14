@@ -8,7 +8,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
 
-import com.ruby.java.stack_q.IntStack4.EmptyIntStackException;
+//import com.ruby.java.stack_q.IntStack4.EmptyIntStackException;
 class Point2 {
 	private int ix;
 	private int iy;
@@ -71,16 +71,24 @@ class objectStack{
 	//--- 실행시 예외: 스택이 가득 참 ---//
 	public class OverflowGenericStackException extends RuntimeException {
 
+		public OverflowGenericStackException(String message) {
+			super(message);
+		}
+
 	}
 
- private List<Point2> data;           // 스택용 배열
+	private List<Point2> data;           // 스택용 배열
 	//private List<T> data;
 	private int capacity; // 스택의 크기
 	private int top; // 스택 포인터
+	
 
 //--- 생성자(constructor) ---//
 	public objectStack(int capacity) {
 		top = 0;
+		this.capacity = capacity;
+		
+		data = new ArrayList<Point2>();
 
 	}
 
@@ -88,6 +96,10 @@ class objectStack{
 	public boolean push(Point2 x) throws OverflowGenericStackException {
 		if (isFull())
 			throw new OverflowGenericStackException("push: stack overflow");
+		data.add(x);
+		top++;
+		
+		return true;
 
 	}
 
@@ -95,11 +107,28 @@ class objectStack{
 	public Point2 pop() throws EmptyGenericStackException  {
 		if (isEmpty())
 			throw new EmptyGenericStackException("pop: stack Empty");
+		Point2 result = data.get(top -1);
+		data.remove(top-1);
+		top--;
+		//리스트의 top을 리턴한다. //리스트에서만 .get을 쓰다.
+		return result;
 
 	}
 
 //--- 스택에서 데이터를 피크(peek, 정상에 있는 데이터를 들여다봄) ---//
 	public Point2 peek() throws EmptyGenericStackException  {
+		if (isEmpty())
+			throw new EmptyGenericStackException("pop: stack Empty");
+		return data.get(top - 1);
+	}
+	
+	public void dump() throws EmptyGenericStackException {
+		if (isEmpty())
+			throw new EmptyGenericStackException("dump: stack Empty");
+		else
+			for( int i = 0; i < top; i++) {
+				System.out.println(data.get(i)+" ");
+			}
 
 	}
 
@@ -111,7 +140,12 @@ class objectStack{
 		 * pop()으로 구현하지 않고 대신에 while 문으로 remove()를 반복 실행한다
 		 */
 		if (isEmpty()) // 스택이 빔
-
+			throw new EmptyGenericStackException("clear: stack Empty");
+		else
+			while(!isEmpty()) {
+				data.remove(--top);
+			}
+				
 	}
 //--- 스택에서 x를 찾아 인덱스(없으면 –1)를 반환 ---//
 	public int indexOf(Point2 x) {
@@ -142,6 +176,7 @@ class objectStack{
 	}
 
 
+
 }
 public class 실습4_2_1객체스택_리스트 {
 
@@ -168,6 +203,7 @@ public class 실습4_2_1객체스택_리스트 {
 				p = new Point2(rndx,rndy);
 				try {
 					s.push(p);
+					System.out.println("push한 데이터는 " + p + "입니다.");
 				} catch(objectStack.OverflowGenericStackException e) {
 					System.out.println(e.getMessage());
 					e.printStackTrace();
@@ -186,7 +222,7 @@ public class 실습4_2_1객체스택_리스트 {
 
 			case 3: // 피크
 				try {
-					p = s.peek();
+					p= s.peek();
 					System.out.println("peek한 데이터는 " + p + "입니다.");
 				} catch (objectStack.EmptyGenericStackException e) {
 					System.out.println("stack이 비어있습니다.");
@@ -194,10 +230,18 @@ public class 실습4_2_1객체스택_리스트 {
 				break;
 
 			case 4: // 덤프도 피크처럼 구현
-
+				try {
+					s.dump();
+				} catch (objectStack.EmptyGenericStackException e) {
+					System.out.println("Stack이 비어있습니다.");
+				}	
 				break;
 			case 5: //clear도 피크처럼 구현 
-
+				try {
+					s.clear();
+				} catch (objectStack.EmptyGenericStackException e) {
+					System.out.println("Stack이 비어있습니다.");
+				}	
 				break;
 			}
 		}

@@ -23,6 +23,9 @@ class Fruit4 {
 
 
 
+	public Fruit4(String string, int i, String string2) {
+		// TODO Auto-generated constructor stub
+	}
 	public int getPrice() {
 		return price;
 	}
@@ -32,10 +35,7 @@ class Fruit4 {
 }
 //교재 123~129 페이지 참조하여 구현
 class FruitNameComparator2 implements Comparator<Fruit4>{
-	public int compare(Fruit4 f1, Fruit4 f2) {
-
-
-	}
+	
 public class Test_실습3_7객체배열이진탐색 {
 
 	private static void sortData(Fruit4[] arr, Comparator<Fruit4> cc_price) {
@@ -131,6 +131,24 @@ public class Test_실습3_7객체배열이진탐색 {
 		System.out.println("\nbinarySearch() 조회결과::" + result3Index);
 
 	}
+	private static int binarySearch(Fruit4[] arr, Fruit4 newFruit4, Comparator<Fruit4> cc_name) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+	private static void reverse(Fruit4[] arr) {
+		// TODO Auto-generated method stub
+		
+	}
+	private static void showData(String string, Fruit4[] arr) {
+		// TODO Auto-generated method stub
+		
+	}
 
+}
+
+@Override
+public int compare(Fruit4 o1, Fruit4 o2) {
+	// TODO Auto-generated method stub
+	return 0;
 }
 
