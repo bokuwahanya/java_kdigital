@@ -3,6 +3,7 @@ package com.ruby.java.stack_q;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 /*
  * 교재에 있는 소스코드
@@ -15,7 +16,7 @@ import java.util.Scanner;
 
 //int형 고정 길이 스택
 
-class IntStack4 {
+class IntStack {
 	private List<Integer> stk; // 스택용 리스트
 	private int capacity; // 스택의 크기
 	private int ptr; // 스택 포인터
@@ -35,26 +36,48 @@ class IntStack4 {
 	}
 
 //--- 생성자(constructor) ---//
-	public IntStack4(int maxlen) {
-
+	public IntStack(int capacity) {
+		ptr = 0;
+		this.capacity = capacity;
+		stk = new ArrayList<Integer>();
+		//stk를 배열리스트로 변환
 	}
 
 //--- 스택에 x를 푸시 ---//
 	public void push(int x) throws OverflowIntStackException {
-		if (isFull()) // 스택이 가득 참
-
+		if (isFull())// 스택이 가득 참
+			throw new OverflowIntStackException("push : stack is full");
+		stk.add(x);
+		ptr++;
+		
 	}
 
 //--- 스택에서 데이터를 팝(정상에 있는 데이터를 꺼냄) ---//
-	public int pop() throws EmptyIntStackException {
+	public Integer pop() throws EmptyIntStackException {
 		if (isEmpty()) // 스택이 빔
+			throw new EmptyIntStackException("pop : stack is Empty");
+		Integer data = stk.get(ptr-1);
+		stk.remove(ptr-1);
+		ptr--;
+		return data;
 
 	}
 
 //--- 스택에서 데이터를 피크(peek, 정상에 있는 데이터를 들여다봄) ---//
 	public int peek() throws EmptyIntStackException {
 		if (isEmpty()) // 스택이 빔
-
+			throw new EmptyIntStackException("peek: stack is Empty");
+		return stk.get(ptr-1);
+	}
+	
+//--- 스택 안의 모든 데이터를 바닥 → 정상 순서로 표시 ---//	
+	public void dump() throws EmptyIntStackException {
+		if (isEmpty())
+			throw new EmptyIntStackException("dump : stack is Empty");
+		for(int i = 0; i < ptr; i++) {
+			System.out.print(stk.get(i) + " ");
+		}
+		System.out.println();
 	}
 
 //--- 스택을 비움 ---//
@@ -65,13 +88,20 @@ class IntStack4 {
 		 * pop()으로 구현하지 않고 대신에 while 문으로 remove()를 반복 실행한다
 		 */
 		if (isEmpty()) // 스택이 빔
-
+			throw new EmptyIntStackException("clear : stack is Empty");
+		else 
+			while(!isEmpty()) {
+				stk.remove(--ptr);
 		}
 	}
 
 //--- 스택에서 x를 찾아 인덱스(없으면 –1)를 반환 ---//
 	public int indexOf(int x) {
-
+		for(int i = ptr - 1 ; i >= 0; i-- ) {
+			if(stk.get(i).equals(x))
+				return i;
+		}
+		return -1;
 	}
 
 //--- 스택의 크기를 반환 ---//
@@ -94,19 +124,15 @@ class IntStack4 {
 		return ptr >= capacity;
 	}
 	
-//--- 스택 안의 모든 데이터를 바닥 → 정상 순서로 표시 ---//
-	public void dump() throws EmptyIntStackException{
-		if (isEmpty()) {
 
-		}
-	}
 }
 public class 실습4_2_2정수스택리스트 {
 
 	public static void main(String[] args) {
 		Scanner stdIn = new Scanner(System.in);
-		IntStack4 s = new IntStack4(4); // 최대 64 개를 푸시할 수 있는 스택
-
+		IntStack s = new IntStack(10); // 최대 64 개를 푸시할 수 있는 스택
+		Random rnd = new Random();
+		int rndx = 0;
 		while (true) {
 			System.out.println(); // 메뉴 구분을 위한 빈 행 추가
 			System.out.printf("현재 데이터 개수: %d / %d\n", s.size(), s.getCapacity());
@@ -121,10 +147,11 @@ public class 실습4_2_2정수스택리스트 {
 
 			case 1: // 푸시
 				System.out.print("데이터: ");
-				x = stdIn.nextInt();
+				rndx = rnd.nextInt(20);
 				try {
-					s.push(x);
-				} catch (IntStack4.OverflowIntStackException e) {
+					s.push(rndx);
+					System.out.println("푸시한 데이터는 " + rndx + "입니다.");
+				} catch (IntStack.OverflowIntStackException e) {
 					System.out.println("스택이 가득 찼습니다." + e.getMessage());
 					e.printStackTrace();
 				}
@@ -134,7 +161,7 @@ public class 실습4_2_2정수스택리스트 {
 				try {
 					x = s.pop();
 					System.out.println("팝한 데이터는 " + x + "입니다.");
-				} catch (IntStack4.EmptyIntStackException e) {
+				} catch (IntStack.EmptyIntStackException e) {
 					System.out.println("스택이 비어있습니다." + e.getMessage());
 					e.printStackTrace();
 				}
@@ -144,7 +171,7 @@ public class 실습4_2_2정수스택리스트 {
 				try {
 					x = s.peek();
 					System.out.println("피크한 데이터는 " + x + "입니다.");
-				} catch (IntStack4.EmptyIntStackException e) {
+				} catch (IntStack.EmptyIntStackException e) {
 					System.out.println("스택이 비어있습니다." + e.getMessage());
 					e.printStackTrace();
 				}
@@ -153,7 +180,7 @@ public class 실습4_2_2정수스택리스트 {
 			case 4: // 덤프
 				try {
 					s.dump();
-				} catch (IntStack4.EmptyIntStackException e) {
+				} catch (IntStack.EmptyIntStackException e) {
 					System.out.println("스택이 비어있습니다." + e.getMessage());
 					e.printStackTrace();
 				}
@@ -161,7 +188,7 @@ public class 실습4_2_2정수스택리스트 {
 			case 5: //clear
 				try {
 					s.clear();
-				} catch (IntStack4.EmptyIntStackException e) {
+				} catch (IntStack.EmptyIntStackException e) {
 					System.out.println("스택이 비어있습니다." + e.getMessage());
 					e.printStackTrace();
 				}

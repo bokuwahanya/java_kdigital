@@ -1,5 +1,6 @@
 
 package com.ruby.java.stack_q;
+import java.util.ArrayList;
 //List를 사용한 선형 큐 구현  - 큐는 배열 사용한다 
 import java.util.Random;
 import java.util.Scanner;
@@ -7,8 +8,8 @@ import java.util.Scanner;
 import Chap4_스택과큐.Queue4.EmptyQueueException;
 
 /*
-* Queue of ArrayList of Point
-*/
+ * Queue of ArrayList of Point
+ */
 
 class Point3 {
 	private int ix;
@@ -49,41 +50,90 @@ class Point3 {
 
 //int형 고정 길이 큐
 class objectQueue2 {
-  private Point3[] que;
+	private Point3[] que;
 	private int capacity; // 큐의 크기
 	private int front; // 맨 처음 요소 커서
 	private int rear; // 맨 끝 요소 커서
 	private int num; // 현재 데이터 개수
 
-//--- 실행시 예외: 큐가 비어있음 ---//
+	//--- 실행시 예외: 큐가 비어있음 ---//
+	public class EmptyQueueException extends RuntimeException{
+		public EmptyQueueException(String message) {
+			super (message);
+		}
+	}
 
+	//--- 실행시 예외: 큐가 가득 찼음 ---//
+	public class OverflowQueueException extends RuntimeException{
+		public OverflowQueueException(String message) {
+			super (message);
+		}
+	}
 
-//--- 실행시 예외: 큐가 가득 찼음 ---//
+	//--- 생성자(constructor) ---//
+	public objectQueue2(int maxlen) {
+		front = 0;
+		capacity = maxlen;
+		rear = 0;
+		num = 0;
+		try {
+			que = new Point3[capacity];
+		} catch (OutOfMemoryError e) {
+			capacity = 0;
+		}
+	}
 
-
-//--- 생성자(constructor) ---//
-public objectQueue2(int maxlen) {
-
-}
-
-//--- 큐에 데이터를 인큐 ---//
+	//--- 큐에 데이터를 인큐 ---//
 	public int enque(Point3 x) throws OverflowQueueException {
-
+		if (isFull())
+			throw new OverflowQueueException("enque : 큐가 꽉찼습니다");
+		que[rear++] = x;
+		num++;
+		if(rear == capacity)
+			rear = 0;
+		
+		return 0;
 	}
 
-//--- 큐에서 데이터를 디큐 ---//
+	//--- 큐에서 데이터를 디큐 ---//
 	public Point3 deque() throws EmptyQueueException {
+		if (isEmpty())
+			throw new EmptyQueueException("deque : 큐가 비었습니다");
+		Point3 x = que[front++];
+		num--;
+		if (front == capacity)
+			front = 0;
+		return x;
 
 	}
 
-//--- 큐에서 데이터를 피크(프런트 데이터를 들여다봄) ---//
+	//--- 큐에서 데이터를 피크(프런트 데이터를 들여다봄) ---//
 	public Point3 peek() throws EmptyQueueException {
+		if (isEmpty())
+			throw new EmptyQueueException("peek : 큐가 비었습니다");
+		return que[front];
 
 	}
+	//--- 큐 안의 모든 데이터를 프런트 → 리어 순으로 출력 ---//
+	public void dump() throws EmptyQueueException {
+		if (isEmpty())
+			throw new EmptyQueueException("dump : 큐가 비었습니다");
+		else {
+			for(int i = 0; i < num; i++) {
+				System.out.print(que[(i + front) % capacity] + " ");
+				System.out.println();
+			}
+		}
+	}
 
-//--- 큐를 비움 ---peek처럼 구현//
+	//--- 큐를 비움 ---peek처럼 구현//
+	public void clear() throws EmptyQueueException {
+		if (isEmpty())
+			throw new EmptyQueueException("clear : 큐가 비었습니다");
+		num = front = rear = 0;
+	}
 
-//--- 큐에서 x를 검색하여 인덱스(찾지 못하면 –1)를 반환 ---//
+	//--- 큐에서 x를 검색하여 인덱스(찾지 못하면 –1)를 반환 ---//
 	public int indexOf(Point3 x) {
 		for (int i = 0; i < num; i++) {
 			int idx = (i + front) % capacity;
@@ -93,33 +143,33 @@ public objectQueue2(int maxlen) {
 		return -1; // 검색 실패
 	}
 
-//--- 큐의 크기를 반환 ---//
+	//--- 큐의 크기를 반환 ---//
 	public int getCapacity() {
 		return capacity;
 	}
 
-//--- 큐에 쌓여 있는 데이터 개수를 반환 ---//
+	//--- 큐에 쌓여 있는 데이터 개수를 반환 ---//
 	public int size() {
 		return num;
 	}
 
-//--- 큐가 비어있는가? ---//
+	//--- 큐가 비어있는가? ---//
 	public boolean isEmpty() {
 		return num <= 0;
 	}
 
-//--- 큐가 가득 찼는가? ---//
+	//--- 큐가 가득 찼는가? ---//
 	public boolean isFull() {
 		return num >= capacity;
 	}
 
-//--- 큐 안의 모든 데이터를 프런트 → 리어 순으로 출력 ---//
+
 
 }
 public class 실습4_4객체선형큐_배열 {
 	public static void main(String[] args) {
 		Scanner stdIn = new Scanner(System.in);
-		objectQueue2 oq = new objectQueue2(4); // 최대 64개를 인큐할 수 있는 큐
+		objectQueue2 oq = new objectQueue2(8); // 최대 64개를 인큐할 수 있는 큐
 		Random random = new Random();
 		int rndx = 0, rndy = 0;
 		Point3 p = null;
@@ -162,10 +212,19 @@ public class 실습4_4객체선형큐_배열 {
 				break;
 
 			case 4: // 덤프
-	
+				try {
+					oq.dump();
+				} catch (objectQueue2.EmptyQueueException e) {
+					System.out.println("큐가 비어 있습니다.");
+				}
+
 				break;
 			case 5: //clear
-		
+				try {
+					oq.clear();
+				} catch (objectQueue2.EmptyQueueException e) {
+					System.out.println("큐가 비어 있습니다.");
+				}
 				break;
 			default:
 				break;
