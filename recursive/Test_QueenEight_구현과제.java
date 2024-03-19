@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.ruby.java.ch06.ThisTest;
+import com.ruby.java.recursive.Stack4.EmptyGenericStackException;
 
 //https://www.geeksforgeeks.org/n-queen-problem-backtracking-3/?ref=lbp
 //N Queen problem / backtracking
@@ -80,7 +81,7 @@ class Stack4 {
 	// --- 생성자(constructor) ---//
 	public Stack4(int capacity) {
 		top = 0;
-		capacity = this.capacity;
+		this.capacity = capacity;
 		data = new ArrayList<Point>();
 	}
 
@@ -163,7 +164,7 @@ class Stack4 {
 }
 
 public class Test_QueenEight_구현과제 {
-	public static void EightQueen(int[][] d) {
+	public static void EightQueen(int[][] d) throws EmptyGenericStackException {
 		int count = 0;// 퀸 배치 갯수
 		int numberSolutions = 0;
 		int ix = 0, iy = 0;// 행 ix, 열 iy
@@ -171,94 +172,155 @@ public class Test_QueenEight_구현과제 {
 		Point p = new Point(ix, iy);// 현 위치를 객체로 만들고
 		d[ix][iy] = 1;// 현 위치에 queen을 넣었다는 표시를 하고
 		count++;
-		iy++;
-		while (true) {
-			if(p > 0) {
-				st.push(p);// 스택에 현 위치 객체를 push
-				p = p - 1;
-				continue;
-			}
-			break;
-
-		}
-		public static boolean checkRow(int[][] d, int crow) { //배열 d에서 행 crow에 퀸을 배치할 수 있는지 조사
-			for(int i = 0; i < crow; i++) {
-				if(d[i][crow] == 1) {
-					return false;
-				}
-			}
-			return true;
-		}
-
-		public static boolean checkCol(int[][] d, int ccol) {//배열 d에서 열 ccol에 퀸을 배치할 수 있는지 조사
-			for(int i = 0; i <ccol; i++) {
-				if(d[ccol][i] == 1) {
-					return false;
-				}
-			}
-			return true;
-		}
-
-		//배열 d에서 행 cx, 열 cy에 퀸을 남서, 북동 대각선으로 배치할 수 있는지 조사
-		public static boolean checkDiagSW(int[][] d, int cx, int cy) { // x++, y-- or x--, y++ where 0<= x,y <= 7
-
-			while((0 <= cx &&  cx<= 7) && (0 <= cy && cy <= 7)) {
-				if(1 > d[cx][cy] ) {
-					cx++;
-					cy--;
-					return false;
-				}
-				if(1 <d[cx][cy]) {
-					cx--;
-					cy++;
-					return false;
-				}
-				break;
-			} 
-			return true;
-		}	
-
-
-		//배열 d에서 행 cx, 열 cy에 퀸을 남동, 북서 대각선으로 배치할 수 있는지 조사
-		public static boolean checkDiagSE(int[][] d, int cx, int cy) {// x++, y++ or x--, y--
-			
-			while((0 <= cx &&  cx<= 7) && (0 <= cy && cy <= 7)) {
-				if(1 > d[cx][cy]) {
-					cx++;
-					cy++;
-					return false;
-				}
-				if(1 <d[cx][cy]) {
-					cx--;
-					cy--;
-					return false;
-				}
-				break;
-			} 
-			return true;
-		}	
+		ix++;
+		st.push(p);
 		
-		//배열 d에서 (x,y)에 퀸을 배치할 수 있는지  조사
-		public static boolean checkMove(int[][] d, int x, int y) {// (x,y)로 이동 가능한지를 check
-
+		while (!(iy == d[0].length && ix == 0)) {
+			int newCol = nextMove(d, ix,iy);
+			if(newCol != -1) {
+				iy = newCol;
+				d[ix][newCol] = 1; 
+				st.push(new Point(ix,newCol)); // 새로 찾은 ix,
+				
+				count ++;
+				
+				ix++;
+				iy = 0;
+				if(count == 8) {
+					numberSolutions++;
+					System.out.println("#[" + numberSolutions + "]");
+					showQueens(d);
+				}
+				continue;
+			}else 
+			{
+				Point n = st.pop(); // 실행되고 리턴 // Point n 이라는 객체에 st에서 팝한걸 저장
+				d[n.getX()][n.getY()] = 0;
+				ix = n.getX(); //현 메소드 지역변수에 가지고 온 값을 넣는다.
+				iy = n.getY();
+				count --;
+				iy++;
+			}
+	
 		}
-		//배열 d에서 현재 위치(row,col)에 대하여 다음에 이동할 위치 nextCol을 반환, 이동이 가능하지 않으면 -1를 리턴
-		public static int nextMove(int[][] d, int row, int col) {// 현재 row, col에 대하여 이동할 col을 return
+		
+		
+		//밑에 넥스트 무브의 메서드로 탐색을 하면서 넣는다. 행을 탐색하면서 넣는다. 
+		//만약 행에 넣을 것이 없을 때 팝을 시키고 전 위치에서 부터 열 탐색 시작한다. 그래도 없다면 최종적으로 다 팝.
+		//
 
-		}
 
-		static void showQueens(int[][] data) {// 배열 출력
 
-		}
-
-		public static void main(String[] args) {
-			int row = 8, col = 8;
-			int[][] data = new int[8][8];
-			for (int i = 0; i < data.length; i++)
-				for (int j = 0; j < data[0].length; j++)
-					data[i][j] = 0;
-
-			EightQueen(data);
-
-		}
 	}
+	public static boolean checkRow(int[][] d, int crow) { //배열 d에서 행 crow에 퀸을 배치할 수 있는지 조사
+		for(int i = 0; i < d.length; i++) {
+			if(d[crow][i] == 1) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	public static boolean checkCol(int[][] d, int ccol) {//배열 d에서 열 ccol에 퀸을 배치할 수 있는지 조사
+		for(int i = 0; i < d.length; i++) {
+			if(d[i][ccol] == 1) {
+				return false;
+			}
+		}
+		return true;
+	}
+
+	//배열 d에서 행 cx, 열 cy에 퀸을 남서, 북동 대각선으로 배치할 수 있는지 조사
+	public static boolean checkDiagSW(int[][] d, int cx, int cy) { // x++, y-- or x--, y++ where 0<= x,y <= 7
+		
+		int x = cx;
+		int y = cy;
+
+		while((0 <= y &&  x < 8) ) {
+			if(1 == d[x][y]) {
+				return false;
+			}
+			x++;
+			y--;
+		}
+		
+		x= cx;
+		y= cy;
+		
+		while((0 <= x && y < 8)) {
+			
+			if(1 == d[x][y]) {
+				return false;
+			}
+			x--;
+			y++;
+		}
+		return true;
+	}
+
+	//배열 d에서 행 cx, 열 cy에 퀸을 남동, 북서 대각선으로 배치할 수 있는지 조사
+	public static boolean checkDiagSE(int[][] d, int cx, int cy) {// x++, y++ or x--, y--
+		
+		int x = cx;
+		int y = cy;
+
+		while((x < 8 &&  y < 8) ) {
+			if(1 == d[x][y]) {
+				return false;
+			}
+			x++;
+			y++;
+		}
+		
+		x= cx;
+		y= cy;
+		
+		while((0 <= y && 0 <= x)) {
+			if(1 == d[x][y]) {
+				return false;
+			}
+			x--;
+			y--;
+		} 
+		return true;
+	}
+
+	//배열 d에서 (x,y)에 퀸을 배치할 수 있는지  조사
+	public static boolean checkMove(int[][] d, int x, int y) {// (x,y)로 이동 가능한지를 check
+		if(checkCol(d, y) && checkRow(d, x) && checkDiagSE(d, x, y) && checkDiagSW(d, x, y)) {
+			return true;
+		}
+		return false;
+	}
+	//배열 d에서 현재 위치(row,col)에 대하여 다음에 이동할 위치 nextCol을 반환, 이동이 가능하지 않으면 -1를 리턴
+	public static int nextMove(int[][] d, int row, int col) {// 현재 row, col에 대하여 이동할 col을 return
+		for(int nextCol = col ; nextCol < d[0].length; nextCol++) {
+			if(checkMove(d, row, nextCol)) {
+				return nextCol;
+			}
+		}
+		return -1;
+	}
+
+	static void showQueens(int[][] data) {// 배열 출력
+		
+		for(int i = 0; i < data.length; i++) {
+			for(int j = 0; j < data.length; j++) {
+				System.out.print(data[i][j] + " ");
+			}
+			System.out.println();
+		}
+		System.out.println("--------------------------");
+	}
+
+	public static void main(String[] args) throws EmptyGenericStackException {
+		int row = 8, col = 8;
+		int[][] data = new int[8][8];
+		for (int i = 0; i < data.length; i++)
+			for (int j = 0; j < data[0].length; j++)
+				data[i][j] = 0;
+
+		EightQueen(data);
+
+	}
+}
