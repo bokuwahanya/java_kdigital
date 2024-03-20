@@ -4,11 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 enum Directions2 {N, NE, E, SE, S, SW, W, NW}
-class Items3 {
+class Items {
 	int x;
 	int y;
 	int dir;
-	public Items3(int x, int y, int d) {
+	public Items(int x, int y, int d) {
 		this.x = x; this.y = y; this.dir = d;
 	}
 	@Override
@@ -16,15 +16,15 @@ class Items3 {
 		return "x = " + x + ", y = " + y + ", dir = " + dir;
 	}
 }
-class Offsets3 {
+class Offsets {
 	int a;
 	int b;
-	public Offsets3(int a, int b) {
+	public Offsets(int a, int b) {
 		this.a = a; this.b = b;
 	}
 }
 	class StackList {
-	private List<Items3> data; // 스택용 배열
+	private List<Items> data; // 스택용 배열
 	private int capacity; // 스택의 크기
 	private int top; // 스택 포인터
 
@@ -45,41 +45,42 @@ class Offsets3 {
 		top = 0;
 		capacity = maxlen;
 		try {
-			data = new ArrayList<>(0); // 스택 본체용 배열을 생성
+			data = new ArrayList<Items>(); // 스택 본체용 배열을 생성
 		} catch (OutOfMemoryError e) { // 생성할 수 없음
 			capacity = 0;
 		}
 	}
 
 	// --- 스택에 x를 푸시 ---//
-	public void push(Items3 p) throws OverflowIntStackException {
-		if (top >= capacity) // 스택이 가득 참
+	public void push(Items p) throws OverflowIntStackException {
+		if (isFull()) // 스택이 가득 참
 			throw new OverflowIntStackException();
 		data.add(p);top++;
-		return;
 	}
 
 	// --- 스택에서 데이터를 팝(정상에 있는 데이터를 꺼냄) ---//
-	public Items3 pop() throws EmptyIntStackException {
-		if (top <= 0) // 스택이 빔
+	public Items pop() throws EmptyIntStackException {
+		if (isEmpty()) // 스택이 빔
 			throw new EmptyIntStackException();
 		return data.remove(--top);
 	}
 
 	// --- 스택에서 데이터를 피크(peek, 정상에 있는 데이터를 들여다봄) ---//
-	public Items3 peek() throws EmptyIntStackException {
-		if (top <= 0) // 스택이 빔
+	public Items peek() throws EmptyIntStackException {
+		if (isEmpty()) // 스택이 빔
 			throw new EmptyIntStackException();
 		return data.get(top - 1);
 	}
 
 	// --- 스택을 비움 ---//
 	public void clear() {
+		if(isEmpty())
+			throw new EmptyIntStackException();
 		top = 0;
 	}
 
 	// --- 스택에서 x를 찾아 인덱스(벌견하지 못하면 –1)를 반환 ---//
-	public int indexOf(Items3 x) {
+	public int indexOf(Items x) {
 		for (int i = top - 1; i >= 0; i--) // 정상 쪽에서 선형검색
 			if (data.get(i).equals(x))
 				return i; // 검색 성공
@@ -108,7 +109,7 @@ class Offsets3 {
 
 	// --- 스택 안의 모든 데이터를 바닥 → 정상 순서로 표시 ---//
 	public void dump() {
-		if (top <= 0)
+		if (isEmpty())
 			System.out.println("스택이 비어있습니다.");
 		else {
 			for (int i = 0; i < top; i++)
@@ -121,6 +122,7 @@ class Offsets3 {
 	public class Test_MazingProblem_미로찾기 {
 
 		static Offsets[] moves = new Offsets[8];//static을 선언하는 이유를 알아야 한다
+		
 
 		public static void path(int[][] maze, int[][] mark, int ix, int iy) {
 
@@ -139,19 +141,29 @@ class Offsets3 {
 				int i = tmp.x;
 				int j = tmp.y;
 				int d = tmp.dir;
+				
 				mark[i][j] = 1;//backtracking 궤적은 1로 표시
 				while (d < 8) // moves forward
 				{
-
-					if ((g == ix) && (h == iy)) { // reached exit
+					int g = moves[d].a;
+					int h = moves[d].b;
+					//방향을 탐색한다. 
+						// 가야될 길을 업데이트
+					if ((g == ix) && (h == iy)) {// reached exit
 													// output path
+						mark[13][16] = 2;//출구 아웃
 
 					}
 					if ((maze[g][h] == 0) && (mark[g][h] == 0)) { // new position
-
-
-					} else
-
+						// 값을 넣는다. 혹은 다시 원래자리로 되돌아온다
+						st.push(new Items(i,j,d));
+						
+					} else{
+						Items n = st.pop();
+						mark[n.x][n.y] = 1;
+						d++;
+						// 길이 막혀 있으면 현자리에서 팝을 하고 재탐색.
+					}
 				}
 			}
 			System.out.println("no path in maze ");
@@ -166,8 +178,8 @@ class Offsets3 {
 			}
 		}
 		public static void main(String[] args) {
-			int[][] maze = new int[14][17];
-			int[][] mark = new int[14][17];
+			int[][] maze = new int[14][17]; //미로 그자체의 배열 건들면 미로가 사라짐
+			int[][] mark = new int[14][17]; // 경로 기억 배열 푸시 팝을 한다. 
 
 			int input[][] = { // 12 x 15
 					{ 0, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1 },
@@ -195,6 +207,7 @@ class Offsets3 {
 			//Directions d;
 			//d = Directions.N;
 			//d = d + 1;//java는 지원안됨
+			// moves라는 배열이 있는 것. 
 			for (int i = 0; i < 14; i++) {
 				for (int j = 0; j < 17; j++) {
 

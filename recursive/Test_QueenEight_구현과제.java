@@ -180,36 +180,31 @@ public class Test_QueenEight_구현과제 {
 			if(newCol != -1) {
 				iy = newCol;
 				d[ix][newCol] = 1; 
-				st.push(new Point(ix,newCol)); // 새로 찾은 ix,
-				
+				st.push(new Point(ix,newCol)); // 새로 찾은 ix, 행탐색
 				count ++;
+				ix++; // 행탐색
 				
-				ix++;
-				iy = 0;
-				if(count == 8) {
+				iy = 0; // y 초기화
+				if(count == d.length) {
 					numberSolutions++;
 					System.out.println("#[" + numberSolutions + "]");
 					showQueens(d);
 				}
 				continue;
 			}else 
-			{
+				{
 				Point n = st.pop(); // 실행되고 리턴 // Point n 이라는 객체에 st에서 팝한걸 저장
 				d[n.getX()][n.getY()] = 0;
 				ix = n.getX(); //현 메소드 지역변수에 가지고 온 값을 넣는다.
 				iy = n.getY();
-				count --;
-				iy++;
+				count --; // 카운트를 제거하고 다시 시작
+				iy++; // 팝되고 나서 팝한 자리에서 열탐색
 			}
 	
 		}
-		
-		
 		//밑에 넥스트 무브의 메서드로 탐색을 하면서 넣는다. 행을 탐색하면서 넣는다. 
 		//만약 행에 넣을 것이 없을 때 팝을 시키고 전 위치에서 부터 열 탐색 시작한다. 그래도 없다면 최종적으로 다 팝.
 		//
-
-
 
 	}
 	public static boolean checkRow(int[][] d, int crow) { //배열 d에서 행 crow에 퀸을 배치할 수 있는지 조사
