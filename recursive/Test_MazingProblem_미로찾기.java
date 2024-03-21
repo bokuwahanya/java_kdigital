@@ -136,35 +136,38 @@ class Offsets {
 			st.push(temp);
 
 			while (!st.isEmpty()) // stack not empty
-			{
+			{ // 와일 두개 => 밑의 와일문 브레이크 => 스택이 비엇을 때 끝나니깐 안비었을 때, 출구를 찾았을 때 와일문끝
 				Items tmp = st.pop(); // unstack
 				int i = tmp.x;
 				int j = tmp.y;
 				int d = tmp.dir;
-				
-				mark[i][j] = 1;//backtracking 궤적은 1로 표시
+				mark[tmp.x][tmp.y] = 1;//backtracking 궤적은 1로 표시
+				st.push(new Items(i,j,d)); 
+			
 				while (d < 8) // moves forward
 				{
-					int g = moves[d].a;
-					int h = moves[d].b;
+					mark[1][1] = 2;
+					int g = i + moves[d].a;
+					int h = j + moves[d].b;
+					
 					//방향을 탐색한다. 
 						// 가야될 길을 업데이트
 					if ((g == ix) && (h == iy)) {// reached exit
 													// output path
-						mark[13][16] = 2;//출구 아웃
+						mark[temp.x][temp.y] = 2;//출구 아웃
 
 					}
 					if ((maze[g][h] == 0) && (mark[g][h] == 0)) { // new position
 						// 값을 넣는다. 혹은 다시 원래자리로 되돌아온다
+						mark[g][h] = 2;
 						st.push(new Items(i,j,d));
+						i = g; j = h; d = 0; 
 						
 					} else{
-						Items n = st.pop();
-						mark[n.x][n.y] = 1;
 						d++;
 						// 길이 막혀 있으면 현자리에서 팝을 하고 재탐색.
 					}
-				}
+				}break;
 			}
 			System.out.println("no path in maze ");
 		}
@@ -194,6 +197,8 @@ class Offsets {
 					{ 1, 1, 0, 0, 0, 1, 1, 0, 1, 1, 0, 0, 0, 0, 0 },
 					{ 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0 },
 					{ 0, 1, 0, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0 }};
+			
+			
 			for (int ia = 0; ia < 8; ia++)
 				moves[ia] = new Offsets(0, 0);//배열에 offsets 객체를 치환해야 한다.
 			moves[0].a = -1;	moves[0].b = 0;
@@ -208,10 +213,13 @@ class Offsets {
 			//d = Directions.N;
 			//d = d + 1;//java는 지원안됨
 			// moves라는 배열이 있는 것. 
-			for (int i = 0; i < 14; i++) {
-				for (int j = 0; j < 17; j++) {
-
+			for (int i = 0; i < maze.length; i++) {
+				for (int j = 0; j < maze[0].length; j++) {
+					if( j == 0 || i == 0 || j == (maze[0].length-1) || i == (maze.length-1) ) {
+					maze[i][j] = 1;  
 					// input[][]을 maze[][]로 변환
+					}else
+					maze[i][j] = input[i-1][j-1];
 				}
 			}
 			System.out.println("maze[12,15]::");
@@ -219,10 +227,10 @@ class Offsets {
 		
 			System.out.println("mark::");
 			showMatrix(mark, 13, 16);
-
+//
 			path(maze, mark, 12, 15);
 			System.out.println("mark::");
-			showMatrix(mark, 12, 15);
+			showMatrix(mark, 13, 16);
 		}
 	}
 
